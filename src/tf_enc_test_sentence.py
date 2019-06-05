@@ -17,6 +17,9 @@ def encode_sentence(sentence, model_name, models_dir='models'):
     with tf.Session(graph=tf.Graph()) as sess:
         context = tf.placeholder(tf.int32, [1, None])
         lm_output = model.model(hparams=hparams, X=context, past=None, reuse=tf.AUTO_REUSE)
+        saver = tf.train.Saver()
+        ckpt = tf.train.latest_checkpoint(os.path.join(models_dir, model_name))
+        saver.restore(sess, ckpt)
         out = sess.run(lm_output, feed_dict={context: context_tokens})
         print(out['logits'])
 
