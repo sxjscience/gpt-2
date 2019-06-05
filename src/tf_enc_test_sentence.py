@@ -21,9 +21,11 @@ def encode_sentence(sentence, model_name, models_dir='models'):
         ckpt = tf.train.latest_checkpoint(os.path.join(models_dir, model_name))
         saver.restore(sess, ckpt)
         out = sess.run(lm_output, feed_dict={context: context_tokens})
-        print(out['logits'])
+        return out['logits']
 
 if __name__ == '__main__':
     sentence = ' natural language processing tools such as gluonnlp and torchtext'
-    encode_sentence(sentence, '117M')
-    encode_sentence(sentence, '345M')
+    logits = encode_sentence(sentence, '117M')
+    np.save('117M_gt_logits.npy', logits)
+    logits = encode_sentence(sentence, '345M')
+    np.save('345M_gt_logits.npy', logits)
