@@ -11,7 +11,7 @@ import model, sample, encoder
 def encode_sentence(sentence, model_name, models_dir='models'):
     enc = encoder.get_encoder(model_name, models_dir)
     hparams = model.default_hparams()
-    context_tokens = enc.encode(sentence)
+    context_tokens = [enc.encode(sentence)]
     with open(os.path.join(models_dir, model_name, 'hparams.json')) as f:
         hparams.override_from_dict(json.load(f))
     with tf.Session(graph=tf.Graph()) as sess:
